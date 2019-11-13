@@ -13,19 +13,40 @@ Data_processing
 % - EQAPR = Equally-Weighted Average of Prior Returns   -- Monthly
 % - VWAPR = Value-Weighted Average of Prior Returns     -- Monthly
 
-%% TODO:
+%%
+% TODO:
 % - Split data into 6 tables [DONE]
 % - Create Fama-MacBeth regression
 % - Test CAPM
 % - Interpret results
 
+% Gather data from the first date available to August 2008
+startIndex = find(monthly_data.Months == monthly_data.Months(1));
+endIndex = find(monthly_data.Months == 200808);
+
+%   Average Value Weighted Returns -- Monthly
+AVWR = monthly_data(startIndex(1):endIndex(1),:);
+
+%   Average Equal Weighted Returns -- Monthly
+AEWR = monthly_data(startIndex(2):endIndex(2),:);
+
+%   Number of Firms in Portfolios
+NFP = monthly_data(startIndex(3):endIndex(3),:);
+
+%   Average Firm Size
+AVS = monthly_data(startIndex(4):endIndex(4),:);
+
+%   Equally-Weighted Average of Prior Returns
+EQAPR = monthly_data(startIndex(5):endIndex(5),:);
+
+%   Value-Weighted Average of Prior Returns
+VWAPR = monthly_data(startIndex(6):endIndex(6),:);
 
 
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 
 %     ability to explain the cross-section of the portfolio returns.
-dateConversion(200808)
-
+dateConversion
 function dateNr = dateConversion(dateNumber)
     % Converts integer yyyymm to datestring '01-MM-YYYY'
     % E.g. 192701 => '01-01-1927'

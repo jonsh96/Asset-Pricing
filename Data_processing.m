@@ -27,6 +27,29 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
     liquidity_data.Properties.VariableNames(2) = "Levels_of_aggregate_liquidity";
     liquidity_data.Properties.VariableNames(3) = "Innovations_in_aggregate_liquidity";
     liquidity_data.Properties.VariableNames(4) = "Traded_liquidity_factor";
+    
+    % Manually filtering the data into 6 monthly tables
+    % Gather data from the first date available to August 2008
+    startIndex = find(monthly_data.Months == monthly_data.Months(1));
+    endIndex = find(monthly_data.Months == 200808);
+
+    %   Average Value Weighted Returns -- Monthly
+    AVWR = monthly_data(startIndex(1):endIndex(1),:);
+
+    %   Average Equal Weighted Returns -- Monthly
+    AEWR = monthly_data(startIndex(2):endIndex(2),:);
+
+    %   Number of Firms in Portfolios
+    NFP = monthly_data(startIndex(3):endIndex(3),:);
+
+    %   Average Firm Size
+    AVS = monthly_data(startIndex(4):endIndex(4),:);
+
+    %   Equally-Weighted Average of Prior Returns
+    EQAPR = monthly_data(startIndex(5):endIndex(5),:);
+
+    %   Value-Weighted Average of Prior Returns
+    VWAPR = monthly_data(startIndex(6):endIndex(6),:);
 else
     fprintf("The data has already been imported into datatables.\n\n")
 end 
