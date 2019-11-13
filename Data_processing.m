@@ -1,0 +1,60 @@
+%%  Data processing 
+%   - If the data is not in the folder, the files are downloaded.
+%   - Imports the data from the files into tables 
+
+% Monthly portfolios for US stocks sorted by size and momentum
+monthly_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/25_Portfolios_ME_Prior_12_2_CSV.zip";
+monthly_filename = download_data(monthly_url);
+
+% Liquqidity factor 
+liquidity_url = "http://faculty.chicagobooth.edu/lubos.pastor/research/liq_data_1962_2013.txt";
+liquidity_filename = download_data(liquidity_url);
+
+% Checks whether the data has been imported into tables
+if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
+    fprintf("Importing the data into datatables.\n\n")
+    % Importing monthly data into datatable
+    opts = detectImportOptions(monthly_filename{1});       % Automatically detects import settings
+    monthly_data = readtable(monthly_filename{1}, opts);
+
+    % Importing liquidity data into datatable
+    opts = detectImportOptions(liquidity_filename);        % Automatically detects import settings
+    liquidity_data = readtable(liquidity_filename, opts);
+
+    % Manually fixing the variable names
+    monthly_data.Properties.VariableNames(1) = "Months";
+    liquidity_data.Properties.VariableNames(1) = "Months";
+    liquidity_data.Properties.VariableNames(2) = "Levels_of_aggregate_liquidity";
+    liquidity_data.Properties.VariableNames(3) = "Innovations_in_aggregate_liquidity";
+    liquidity_data.Properties.VariableNames(4) = "Traded_liquidity_factor";
+else
+    fprintf("The data has already been imported into datatables.\n\n")
+end 
+
+function filename = download_data(file_url)
+    % This function takes in the URL, finds the filename and downloads it to the directory. 
+    filename = extractBetween(file_url, max(strfind(file_url,'/'))+1, length(file_url{1}));
+    if(~isfile(filename))
+        % If the file is not in the folder then it is downloaded
+        fprintf("Downloading %s.\n\n",filename)
+        websave(filename, file_url);
+        if(contains(filename,".zip"))
+           % If the file is a .zip file then unzip
+           fprintf("Unzipping %s.\n\n",filename)
+           filename = unzip(filename);
+        end
+    else
+        % If the file already exists
+        fprintf("%s already exists in folder.\n\n",filename)
+        if(contains(filename, ".zip"))
+            % Removes .zip from the end of the filename if the file has already been imported
+            filename = extractBetween(filename, 1, length(filename{1})-4);
+        end
+        if(contains(filename, "_CSV"))
+            % Changes _CSV to .CSV so that the data import works in either case
+            filename = extractBetween(filename, 1, length(filename{1})-4) + ".CSV";
+        end
+    end
+end
+
+
