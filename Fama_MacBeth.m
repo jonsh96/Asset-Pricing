@@ -4,3 +4,5 @@
 %  - https://faculty.chicagobooth.edu/john.cochrane/teaching/35150_advanced_investments/week5a_notes.pdf
 liquidity_data.Properties.VariableNames
 
+% tinashe
+
