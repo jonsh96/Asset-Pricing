@@ -1,5 +1,6 @@
 %% 3. Testing the Liquidity Factor for the Cross-Section of Stock Returns
 Data_processing     
+
 % Now there are two large tables
 % - liquidity_data 
 % - monthly_data
@@ -24,7 +25,7 @@ Data_processing
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 
 %     ability to explain the cross-section of the portfolio returns.
-dateConversion(200808)
+dateConversion(200812)
 
 function dateNr = dateConversion(dateNumber)
     % Converts integer yyyymm to datestring '01-MM-YYYY'
