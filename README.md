@@ -1,4 +1,4 @@
-## Asset Pricing 2019
+### Asset Pricing 2019
 ## Group project
 ## 3. Testing the Liquidity Factor for the Cross-Section of Stock Returns 
 
