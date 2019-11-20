@@ -25,21 +25,19 @@ Data_processing
 startDate = max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1)));
 endDate = 200808;
 
-startIndex(1) = min(find(table2array(monthly_data(:,1)) == startDate));
-endIndex(1) = min(find(table2array(monthly_data(:,1)) == endDate));
+startIndex = min(find(table2array(monthly_data(:,1)) == startDate));
+endIndex = min(find(table2array(monthly_data(:,1)) == endDate));
 
-startIndex(2) = min(find(table2array(liquidity_data(:,1)) == startDate));
-endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
-
-returns = table2array(AVWR(startIndex(1):endIndex(1),2:end));
-factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
+AVWR(1,startInd
 
 %%
-size(returns)
-size(factors)
+returns = table2array(AVWR(startIndex:endIndex,2:end));
+factors = table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)):(endIndex-startIndex+1),2:end));
+
 
 %%
-[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(returns, factors)
+
+[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(returns(:,1), factors(:,1))
 
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 

@@ -35,19 +35,14 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
 
     %   Average Value Weighted Returns -- Monthly
     AVWR = monthly_data(startIndex(1):endIndex(1),:);
-
     %   Average Equal Weighted Returns -- Monthly
     AEWR = monthly_data(startIndex(2):endIndex(2),:);
-
     %   Number of Firms in Portfolios
     NFP = monthly_data(startIndex(3):endIndex(3),:);
-
     %   Average Firm Size
     AVS = monthly_data(startIndex(4):endIndex(4),:);
-
     %   Equally-Weighted Average of Prior Returns
     EQAPR = monthly_data(startIndex(5):endIndex(5),:);
-
     %   Value-Weighted Average of Prior Returns
     VWAPR = monthly_data(startIndex(6):endIndex(6),:);
 else
