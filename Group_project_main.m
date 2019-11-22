@@ -14,7 +14,7 @@ Data_processing
 % - EQAPR = Equally-Weighted Average of Prior Returns   -- Monthly
 % - VWAPR = Value-Weighted Average of Prior Returns     -- Monthly
 
-%% TODO:
+% TODO:
 % - Split data into 6 tables [DONE]
 % - Create Fama-MacBeth regression
 % - Test CAPM
@@ -34,11 +34,6 @@ endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
 returns = table2array(AVWR(startIndex(1):endIndex(1),2:end));
 factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
 
-%%
-size(returns)
-size(factors)
-
-%%
 [lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(returns, factors)
 
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
