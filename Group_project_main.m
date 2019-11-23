@@ -31,15 +31,16 @@ endIndex(1) = min(find(table2array(monthly_data(:,1)) == endDate));
 startIndex(2) = min(find(table2array(liquidity_data(:,1)) == startDate));
 endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
 
-startIndex(3) = min(find(table2array(monthly_data(:,1)) == startDate));
-endIndex(3)= min(find(table2array(monthly_data(:,1)) == endDate));
+startIndex(3) = min(find(table2array(market_data(:,1)) == startDate));
+endIndex(3)= min(find(table2array(market_data(:,1)) == endDate));
 
 returns = table2array(AVWR(startIndex(1):endIndex(1),2:end));
 factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
 risk_free = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
-excess_return = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
+excess_market_returns = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
+excess_returns=returns-risk_free;
 
-[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(returns, factors)
+[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, excess_market_returns)
 
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 
@@ -47,8 +48,8 @@ excess_return = table2array(excess_return_data(startIndex(3):endIndex(3),1:end))
 
 
 
-
-dateConversion(200812)
+% 
+% dateConversion(200812)
 
 
 function dateNr = dateConversion(dateNumber)
