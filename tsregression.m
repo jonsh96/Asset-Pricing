@@ -28,12 +28,6 @@ EReturns  = mean(excess_returns)';
 lambda    = beta\EReturns; 
 miReturns = beta*lambda;
 
-plot(miReturns,EReturns,'.b')
-xlabel('Predicted expected returns from Fama MacBeth')
-ylabel('Actual expected returns')
-title('Fama MacBeth fit')
-xlim([0,1])
-
 covariance=hac(beta(:,2),EReturns) %returns a covariance matrix of our lambdas
 
 SE=sqrt(diag(covariance));
@@ -44,6 +38,11 @@ tlambda=lambda./SE
 %     2.3323
 %    -1.3295
 
+% plot(miReturns,EReturns,'.b')
+% xlabel('Predicted expected returns from Fama MacBeth')
+% ylabel('Actual expected returns')
+% title('Fama MacBeth fit')
+% xlim([0,1])
 %%
 
 %PART B
@@ -84,7 +83,7 @@ ylabel('Actual expected returns')
 title('Fama MacBeth fit')
 xlim([0,1])
 
-covariance=hac(beta(:,2),EReturns) %returns a covariance matrix of our lambdas
+covariance=hac(beta(:,2:end),EReturns) %returns a covariance matrix of our lambdas
 
 SE=sqrt(diag(covariance));
 tlambda=lambda./SE 

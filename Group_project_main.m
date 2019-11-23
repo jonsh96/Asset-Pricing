@@ -22,25 +22,29 @@ Data_processing
 
 % Making sure the data ranges from the same dates
 
-startDate = max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1)));
-endDate = 200808;
+startDate       = max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1)));
+endDate         = 200808;
 
-startIndex(1) = min(find(table2array(monthly_data(:,1)) == startDate));
-endIndex(1) = min(find(table2array(monthly_data(:,1)) == endDate));
+startIndex(1)   = min(find(table2array(monthly_data(:,1)) == startDate));
+endIndex(1)     = min(find(table2array(monthly_data(:,1)) == endDate));
 
-startIndex(2) = min(find(table2array(liquidity_data(:,1)) == startDate));
-endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
+startIndex(2)   = min(find(table2array(liquidity_data(:,1)) == startDate));
+endIndex(2)     = min(find(table2array(liquidity_data(:,1)) == endDate));
 
-startIndex(3) = min(find(table2array(market_data(:,1)) == startDate));
-endIndex(3)= min(find(table2array(market_data(:,1)) == endDate));
+startIndex(3)   = min(find(table2array(market_data(:,1)) == startDate));
+endIndex(3)     = min(find(table2array(market_data(:,1)) == endDate));
 
-returns = table2array(AVWR(startIndex(1):endIndex(1),2:end));
-factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
-risk_free = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
+returns         = table2array(AVWR(startIndex(1):endIndex(1),2:end));
+factors         = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
+risk_free       = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
 excess_market_returns = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
-excess_returns=returns-risk_free;
+excess_returns  = returns-risk_free;
 
-[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, excess_market_returns)
+%% 
+[t_lambda, lambda, beta, covariance] = Fama_MacBeth(excess_returns, [factors(:,1:2:3) excess_market_returns]);
+t_lambda
+
+%[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, excess_market_returns)
 
 %% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 

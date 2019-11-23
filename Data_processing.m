@@ -28,8 +28,8 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
     % Importing liquidity data into datatable
     opts = detectImportOptions(fama_french_filename);        % Automatically detects import settings
     market_data = readtable(fama_french_filename, opts);
-    risk_free_data = market_data(:,2);
-    excess_return_data = market_data(:,5);
+    excess_return_data = market_data(:,2);
+    risk_free_data = market_data(:,5);
     
     % Manually fixing the variable names
     monthly_data.Properties.VariableNames(1) = "Months";
