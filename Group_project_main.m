@@ -22,37 +22,110 @@ Data_processing
 
 % Making sure the data ranges from the same dates
 
-startDate       = max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1)));
-endDate         = 200808;
+startDate = max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1)));
+endDate = 200808;
 
-startIndex(1)   = min(find(table2array(monthly_data(:,1)) == startDate));
-endIndex(1)     = min(find(table2array(monthly_data(:,1)) == endDate));
+startIndex(1) = min(find(table2array(monthly_data(:,1)) == startDate));
+endIndex(1) = min(find(table2array(monthly_data(:,1)) == endDate));
 
-startIndex(2)   = min(find(table2array(liquidity_data(:,1)) == startDate));
-endIndex(2)     = min(find(table2array(liquidity_data(:,1)) == endDate));
+startIndex(2) = min(find(table2array(liquidity_data(:,1)) == startDate));
+endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
 
-startIndex(3)   = min(find(table2array(market_data(:,1)) == startDate));
-endIndex(3)     = min(find(table2array(market_data(:,1)) == endDate));
+startIndex(3) = min(find(table2array(market_data(:,1)) == startDate));
+endIndex(3)= min(find(table2array(market_data(:,1)) == endDate));
 
-returns         = table2array(AVWR(startIndex(1):endIndex(1),2:end));
-factors         = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
-risk_free       = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
+returns = table2array(AVWR(startIndex(1):endIndex(1),2:end));
+factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
+risk_free = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
 excess_market_returns = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
-excess_returns  = returns-risk_free;
+excess_returns=returns-risk_free;
+dates = table2array(monthly_data(startIndex(3):endIndex(3),1));
 
-%% 
-[t_lambda, lambda, beta, covariance] = Fama_MacBeth(excess_returns, [factors(:,1:2:3) excess_market_returns]);
-t_lambda
+% [tlambda, lambda, alpha, beta, covariance] = Fama_MacBeth(returns,factors);
+[tlambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(excess_returns, [excess_market_returns factors(:,2:3)]);
+% [lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, [factors excess_market_returns])
 
-%[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, excess_market_returns)
+%% PRED VS ACTUAL RETURNS
+predicted_returns = (beta*gamma)';
+actual_returns = excess_returns;
+residual = predicted_returns - actual_returns;
+xDates = dateConversion(dates);
+plot(xDates, residual, '.')
+datetick('x','yyyy-mm')
+xlim([xDates(1) xDates(end)])
+ylabel('Residual')
+grid on
 
-%% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
+%% PLOT GAMMAS 
+plot(xDates, gamma(1,:)')
+datetick('x','yyyy-mm')
+xlim([xDates(1) xDates(end)])
+ylabel('Residual')
+grid on
+
+
+% plot(xDates, gamma(2,:)')
+% datetick('x','yyyy-mm')
+% xlim([xDates(1) xDates(end)])
+% ylabel('Residual')
+% grid on
+% 
+% 
+% plot(xDates, gamma(3,:)')
+% datetick('x','yyyy-mm')
+% xlim([xDates(1) xDates(end)])
+% ylabel('Residual')
+% grid on
+% 
+% 
+% plot(xDates, gamma(4,:)')
+% datetick('x','yyyy-mm')
+% xlim([xDates(1) xDates(end)])
+% ylabel('Residual')
+% grid on
+% 
+% 
+% plot(xDates, gamma(5,:)')
+% datetick('x','yyyy-mm')
+% xlim([xDates(1) xDates(end)])
+% ylabel('Residual')
+% grid on
+
+
+%% PART C
+startDate = 200809;
+endDate = min(table2array(monthly_data(end-1,1)),table2array(liquidity_data(end,1)));
+
+startIndex(1) = min(find(table2array(monthly_data(:,1)) == startDate));
+endIndex(1) = min(find(table2array(monthly_data(:,1)) == endDate));
+
+startIndex(2) = min(find(table2array(liquidity_data(:,1)) == startDate));
+endIndex(2)= min(find(table2array(liquidity_data(:,1)) == endDate));
+
+startIndex(3) = min(find(table2array(market_data(:,1)) == startDate));
+endIndex(3)= min(find(table2array(market_data(:,1)) == endDate));
+
+
+% TODO: make pretty
+AVWR = monthly_data(startIndex(1):endIndex(1),:);
+returns = table2array(AVWR);
+
+factors = table2array(liquidity_data(startIndex(2):endIndex(2),2:end));
+risk_free = table2array(risk_free_data(startIndex(3):endIndex(3),1:end));
+excess_market_returns = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
+excess_returns=returns-risk_free;
+dates = table2array(monthly_data(startIndex(3):endIndex(3),1));
+[tlambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(excess_returns, [excess_market_returns factors(:,2:3)])
+
+% [tlambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(excess_returns, [excess_market_returns factors(:,2:3)]);
+
+% a) Perform the test of the CAPM by running a two-steps Fama-MacBeth regression. 
 %     Fully interpret the result and comment upon the validity of the model and its 
 %     ability to explain the cross-section of the portfolio returns.
 
-
-
-% 
+%[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, excess_market_returns)
+%[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, factors)
+%[lambda, tlambda, R2adj, RMSE, alpha, talpha, beta, tbeta, GRS, pval, vcv] = XSReg(excess_returns, [factors excess_markets_returns])
 % dateConversion(200812)
 
 
@@ -62,5 +135,5 @@ function dateNr = dateConversion(dateNumber)
     dd = 1;
     mm = mod(dateNumber,100);
     yyyy = (dateNumber-mod(dateNumber,100))/100;
-    dateNr = datestr(datenum(yyyy,mm,dd));
+    dateNr = datenum(yyyy,mm,dd);
 end

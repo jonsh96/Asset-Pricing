@@ -1,4 +1,4 @@
-function [t_lambda, lambda, beta, covariance] = Fama_MacBeth(returns, factors)
+function [t_lambda, t_gamma, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(returns, factors)
 
     [Tf,K]      = size(factors);
     [T,N]       = size(returns);
@@ -6,8 +6,9 @@ function [t_lambda, lambda, beta, covariance] = Fama_MacBeth(returns, factors)
     alphaBeta   = X\returns;
     alpha       = alphaBeta(1,:)';
     beta        = alphaBeta(2:end,:)';
-    beta        = [ones(N,1),beta]; 
-    % alternate =((X.'*X)\(X.'*excess_returns))'
+    beta        = [ones(N,1),beta];
+    
+    alternate =((X.'*X)\(X.'*returns))';
     % we can use this for CAPM regression since we just run a linear
     % regression(ts regression)
     %
@@ -26,6 +27,7 @@ function [t_lambda, lambda, beta, covariance] = Fama_MacBeth(returns, factors)
     EReturns    = mean(returns)';
     lambda      = beta\EReturns; 
     miReturns   = beta*lambda;
-    
-    plot_Fama_MacBeth(miReturns, EReturns);
+    gamma       = beta\returns';
+    t_gamma     = gamma./SE;
+    plot(miReturns, EReturns,'bo');
 end

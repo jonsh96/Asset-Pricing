@@ -42,7 +42,7 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
     % Gather data from the first date available to August 2008
     startIndex = find(monthly_data.Months == monthly_data.Months(1));
     endIndex = find(monthly_data.Months == 200808);
-
+    
     %   Average Value Weighted Returns -- Monthly
     AVWR = monthly_data(startIndex(1):endIndex(1),:);
     %   Average Equal Weighted Returns -- Monthly
@@ -84,5 +84,3 @@ function filename = download_data(file_url)
         end
     end
 end
-
-
