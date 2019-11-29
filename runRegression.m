@@ -12,7 +12,7 @@ function [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_return
     risk_free = risk_free_data(startIndex(3):endIndex(3),1);
     excess_market_returns = table2array(excess_return_data(startIndex(3):endIndex(3),1:end));
     excess_returns = returns-risk_free;
-    dates = table2array(monthly_data(startIndex(3):endIndex(3),1));
+    dates = table2array(market_data(startIndex(3):endIndex(3),1));
     
     if factorIndex == 0
         [t_lambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(excess_returns, [excess_market_returns]);

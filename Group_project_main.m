@@ -24,10 +24,11 @@ Data_processing
 % 
 % % Matching the indices to the tables
 % [startIndex, endIndex] = indexTables(startDate, endDate, market_data, monthly_data, liquidity_data);
-% 
+%
 %% PART A
 startDate = max(table2array(liquidity_data(1,1)),max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1))));
 endDate = 200808;
+
 factorIndex = 0; % WHICH FACTORS YOU WANT, IF NONE TYPE factorIndex = 0;
 
 [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_returns] = ...
