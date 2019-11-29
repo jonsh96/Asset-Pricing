@@ -7,7 +7,7 @@ monthly_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/25_Po
 monthly_filename = download_data(monthly_url);
 
 % Liquqidity factor 
-liquidity_url = "http://faculty.chicagobooth.edu/lubos.pastor/research/liq_data_1962_2013.txt";
+liquidity_url = "http://faculty.chicagobooth.edu/lubos.pastor/research/liq_data_1962_2018.txt";
 liquidity_filename = download_data(liquidity_url);
 
 % Risk free rate and excess market return
@@ -24,12 +24,17 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
     % Importing liquidity data into datatable
     opts = detectImportOptions(liquidity_filename);        % Automatically detects import settings
     liquidity_data = readtable(liquidity_filename, opts);
+    liquidity_data = liquidity_data(:,1:end-1);
     
     % Importing liquidity data into datatable
     opts = detectImportOptions(fama_french_filename);        % Automatically detects import settings
     market_data = readtable(fama_french_filename, opts);
     excess_return_data = market_data(:,2);
     risk_free_data = market_data(:,5);
+    % Used to clean out NaN values
+    risk_free_temp = risk_free_data{:,'RF'};
+    risk_free_temp(isnan(risk_free_temp))=0;
+    risk_free_data = risk_free_temp;
     
     % Manually fixing the variable names
     monthly_data.Properties.VariableNames(1) = "Months";
@@ -39,12 +44,13 @@ if(~exist('monthly_data','var') || ~exist('liquidity_data','var'))
     liquidity_data.Properties.VariableNames(4) = "Traded_liquidity_factor";
     
     % Manually filtering the data into 6 monthly tables
-    % Gather data from the first date available to August 2008
     startIndex = find(monthly_data.Months == monthly_data.Months(1));
-    endIndex = find(monthly_data.Months == 200808);
+    endIndex = find(monthly_data.Months == monthly_data.Months(end-1));
     
     %   Average Value Weighted Returns -- Monthly
     AVWR = monthly_data(startIndex(1):endIndex(1),:);
+    
+    %   The following datatables are not used
     %   Average Equal Weighted Returns -- Monthly
     AEWR = monthly_data(startIndex(2):endIndex(2),:);
     %   Number of Firms in Portfolios

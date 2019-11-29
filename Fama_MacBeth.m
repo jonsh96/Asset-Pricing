@@ -1,4 +1,4 @@
-function [t_lambda, t_gamma, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(returns, factors)
+function [t_lambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(returns, factors)
 
     [Tf,K]      = size(factors);
     [T,N]       = size(returns);
