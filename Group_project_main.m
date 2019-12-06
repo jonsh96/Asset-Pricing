@@ -28,14 +28,14 @@ Data_processing
 %% PART A
 startDate = max(table2array(liquidity_data(1,1)),max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1))));
 endDate = 200808;
-factorIndex = 0; % WHICH FACTORS YOU WANT, IF NONE TYPE factorIndex = 0;
+factorIndex = 1:3; % WHICH FACTORS YOU WANT, IF NONE TYPE factorIndex = 0;
 
 [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_returns] = ...
     runRegression(startDate, endDate, AVWR, risk_free_data, excess_return_data, market_data, monthly_data, liquidity_data, factorIndex);
 
-% plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
-% plotGammas(dates, gamma);
-% plotBetas(beta);
+plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
+plotGammas(dates, gamma);
+plotBetas(beta);
 
 %% PART B
 startDate = max(table2array(liquidity_data(1,1)),max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1))));
@@ -45,16 +45,27 @@ factorIndex = 1:3; % WHICH FACTORS YOU WANT, IF NONE TYPE factorIndex = 0;
 [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_returns] = ...
     runRegression(startDate, endDate, AVWR, risk_free_data, excess_return_data, market_data, monthly_data, liquidity_data, factorIndex);
 
-% plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
-% plotGammas(dates, gamma);
-% plotBetas(beta);
+plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
+plotGammas(dates, gamma);
+plotBetas(beta);
     
 %% PART C
 startDate = 200809;
 endDate = min(min(max(table2array(liquidity_data(:,1))),max(table2array(monthly_data(:,1)))),max(table2array(market_data(:,1))));
-factorIndex = [1 1 1 1];
+factorIndex = 1:3;
 [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_returns] = ...
-    FamaMacBeth2(startDate, endDate, AVWR, risk_free_data, excess_return_data, market_data, monthly_data, liquidity_data, factorIndex);
+    runRegression(startDate, endDate, AVWR, risk_free_data, excess_return_data, market_data, monthly_data, liquidity_data, factorIndex);
+
+plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
+plotGammas(dates, gamma);
+plotBetas(beta);
+
+%% EXTRA 1968-2018
+startDate = max(table2array(liquidity_data(1,1)),max(table2array(monthly_data(1,1)),table2array(liquidity_data(min(find(liquidity_data.Traded_liquidity_factor ~= -99)),1))));
+endDate = min(min(max(table2array(liquidity_data(:,1))),max(table2array(monthly_data(:,1)))),max(table2array(market_data(:,1))));
+factorIndex = 1:3;
+[t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_returns] = ...
+    runRegression(startDate, endDate, AVWR, risk_free_data, excess_return_data, market_data, monthly_data, liquidity_data, factorIndex);
 
 plotResult(t_lambda, lambda, alpha, beta, gamma, covariance, excess_returns, dates);
 plotGammas(dates, gamma);
