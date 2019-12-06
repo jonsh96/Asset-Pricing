@@ -14,6 +14,10 @@ function [t_lambda, lambda, alpha, beta, gamma, covariance, dates, excess_return
     excess_returns = returns-risk_free;
     dates = table2array(monthly_data(startIndex(3):endIndex(3),1));
     
+    fprintf("Correlation between factors 1 and 2: %.4f\n", corr(factors(:,1),factors(:,2)))
+    fprintf("Correlation between factors 2 and 3: %.4f\n", corr(factors(:,2),factors(:,3)))
+    fprintf("Correlation between factors 1 and 3: %.4f\n", corr(factors(:,1),factors(:,3)))
+    
     if factorIndex == 0
         [t_lambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(excess_returns, [excess_market_returns]);
     else
