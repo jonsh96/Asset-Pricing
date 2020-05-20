@@ -1,5 +1,5 @@
 ### Asset Pricing 2019
-## Group project
+## Group project (Final grade 70%, 1/22)
 ## 3. Testing the Liquidity Factor for the Cross-Section of Stock Returns 
 
 Download monthly portfolios for US stocks sorted by size and momentum (download data from 
