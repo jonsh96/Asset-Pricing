@@ -1,5 +1,6 @@
-function plotGammas(dates, gamma)
-    xDates = dateConversion(dates);
+function plot_gammas(dates, gamma)
+    % Plots the gammas 
+    xDates = date_conversion(dates);
 
     for i = 1:size(gamma,1)
         figure

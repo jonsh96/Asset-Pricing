@@ -17,7 +17,6 @@ function [t_lambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(retur
     EReturns    = mean(returns)';
     covariance  = hac(beta(:,2:end),EReturns) %returns a covariance matrix of our lambdas
     lambda      = beta\mean(returns)'; 
-   
     SE          = sqrt(diag(covariance));    
     t_lambda    = lambda./SE;
     
@@ -29,5 +28,4 @@ function [t_lambda, lambda, alpha, beta, gamma, covariance] = Fama_MacBeth(retur
     miReturns   = beta*lambda;
     gamma       = beta\returns';
     t_gamma     = gamma./SE;
-    plot(miReturns, EReturns,'bo');
 end

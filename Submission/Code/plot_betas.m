@@ -1,4 +1,5 @@
-function plotBetas(beta)
+function plot_betas(beta)
+    % Plots the betas as a bar chart
     for i = 1:size(beta,2)
         figure
         leg = sprintf("Beta %d", i-1);
